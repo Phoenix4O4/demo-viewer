@@ -180,6 +180,8 @@ export namespace Appearance {
 		if(plane < -10000 || plane > 10000) {
 			plane = ((parent_plane + plane + 32767) << 16) >> 16;
 		}
+		if(plane == 13)
+			plane = -100
 		return plane;
 	}
 
