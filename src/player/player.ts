@@ -963,7 +963,7 @@ export class DemoPlayer {
 		return this.get_resource(id).blob_promise();
 	}
 
-	show_darkness = true;
+	show_darkness = false;
 	toggle_darkness() {
 		this.show_darkness = !this.show_darkness;
 		this.change_counter++;
