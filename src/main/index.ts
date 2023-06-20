@@ -53,7 +53,7 @@ let querystring = new URLSearchParams(window.location.search);
 if(querystring.has("demo_url")) {
 	_url = querystring.get("demo_url");
 } else if(querystring.has("roundid")) {
-	_url = `http://127.0.0.1:28453/replays/${querystring.get("roundid")}_demo.log`;
+	_url = `http://209.222.101.195:10101/rounds/${querystring.get("roundid")}/replay`;
 }
 const url = _url;
 
@@ -73,7 +73,8 @@ function stream_replay(response : Response, url:string) {
 		while(is_streamable_replay(response)) {
 			await new Promise(resolve => setTimeout(resolve, last_succeeded ? 1000 : 10000));
 			response = await fetch(url, {
-				headers: {'Access-Control-Allow-Origin': '*'}
+				credentials: +(querystring.get('send_credentials') ?? 0) ? 'include' : 'same-origin',
+				headers: {'Range': 'bytes=' + stream_queue.bytes_read + '-'}
 			});
 			if(!response.body) {
 				throw new Error("No stream!");
@@ -98,8 +99,7 @@ function stream_replay(response : Response, url:string) {
 
 if(url) {
 	document.body.appendChild(spinner.element);
-	console.log("Second")
-	fetch(url, {headers: {'Access-Control-Allow-Origin': '*'}}).then(async res => {
+	fetch(url, {credentials: +(querystring.get('send_credentials') ?? 0) ? 'include' : 'same-origin'}).then(async res => {
 		if(!res.ok) {
 			document.body.textContent = `Server responded with ${res.status} ${res.statusText}`;
 			document.body.style.fontSize = "40px";
