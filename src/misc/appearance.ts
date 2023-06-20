@@ -245,7 +245,7 @@ export namespace Appearance {
 			overlay.transform = [...overlay.transform];
 			matrix_multiply(overlay.transform, appearance.transform);
 		}
-		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && !(overlay.appearance_flags & RESET_ALPHA)) {
+		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && (!(overlay.appearance_flags & RESET_ALPHA) && appearance.plane != 10)) {
 			clone();
 			let alpha = Math.round((appearance.color_alpha >>> 24) * (overlay.color_alpha >>> 24) / 255);
 			overlay.color_alpha = (overlay.color_alpha & 0xFFFFFF) | (alpha << 24);

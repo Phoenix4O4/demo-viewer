@@ -356,7 +356,7 @@ export class DemoParserText extends DemoParser {
 		if(p.read_next_or_end()) return appearance;
 		if(p.curr() != ';') {
 			appearance.plane = p.read_number();
-			if(appearance.plane == 15) appearance.blend_mode = 4;
+			if(appearance.plane == 10  || appearance.plane == -200 || appearance.plane == -410 || appearance.plane == -620) appearance.blend_mode = 4;
 			else appearance.blend_mode = 0;
 		}
 		if(p.read_next_or_end()) return appearance;
