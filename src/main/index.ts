@@ -49,11 +49,18 @@ async function stream_to_interface(parser_interface : Comlink.Remote<DemoParserI
 }
 
 let _url : string|null = null;
+let _password : string|null = null;
+
 let querystring = new URLSearchParams(window.location.search);
+
+if(querystring.has("password")){
+	_password = querystring.get("password");
+}
+const password = _password
 if(querystring.has("demo_url")) {
 	_url = querystring.get("demo_url");
 } else if(querystring.has("roundid")) {
-	_url = `http://209.222.101.195:10101/rounds/${querystring.get("roundid")}/replay`;
+	_url = `http://209.222.101.195:10101/rounds/${querystring.get("roundid")}/replay?password=${password}`;
 }
 const url = _url;
 
