@@ -549,7 +549,9 @@ export class DemoParserBinary extends DemoParser {
 				appearance.vis_flags = p.read_uint8();
 			}
 
-			if(appearance.plane == 10 && !appearance.screen_loc) appearance.blend_mode = 4; // This only exists because I CBA to implement plane masters right now
+
+			//if(appearance.plane == 11) appearance.blend_mode = 5;
+			if(appearance.plane == 10 && !(appearance.layer == 20 || appearance.layer == 20021 || appearance.layer == 20020|| appearance.layer == -20021 || appearance.layer == -20020) && !appearance.screen_loc) appearance.blend_mode = 4; // This only exists because I CBA to implement plane masters right now
 			if(appearance.plane == -200 && !appearance.screen_loc) appearance.blend_mode = 4;
 			if(appearance.plane == -410 && !appearance.screen_loc) appearance.blend_mode = 4;
 			if(appearance.plane == -620 && !appearance.screen_loc) appearance.blend_mode = 4;
