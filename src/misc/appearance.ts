@@ -236,9 +236,6 @@ export namespace Appearance {
 			overlay.layer *=1
 			overlay.plane = appearance.plane + 0.1
 		}
-		if(overlay.plane == 11){
-			overlay.plane = 10
-		}
 		if(overlay.dir != appearance.dir && !overlay.dir_override) {
 			clone();
 			overlay.dir = appearance.dir;

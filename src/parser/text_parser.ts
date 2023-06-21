@@ -356,8 +356,7 @@ export class DemoParserText extends DemoParser {
 		if(p.read_next_or_end()) return appearance;
 		if(p.curr() != ';') {
 			appearance.plane = p.read_number();
-			if(appearance.plane == 10  || appearance.plane == -200 || appearance.plane == -410 || appearance.plane == -620 && !(appearance.layer == 20 || appearance.layer == 20021 || appearance.layer == 20020)) appearance.blend_mode = 4;
-			//else if(appearance.plane == 11) appearance.blend_mode = 5;
+			if(appearance.plane == 10  || appearance.plane == -200 || appearance.plane == -410 || appearance.plane == -620 && !(appearance.layer == 20021 || appearance.layer == 20020)) appearance.blend_mode = 4;
 			else appearance.blend_mode = 0;
 		}
 		if(p.read_next_or_end()) return appearance;
