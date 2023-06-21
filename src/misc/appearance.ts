@@ -252,7 +252,7 @@ export namespace Appearance {
 			overlay.transform = [...overlay.transform];
 			matrix_multiply(overlay.transform, appearance.transform);
 		}
-		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && (!(overlay.appearance_flags & RESET_ALPHA) && appearance.plane != 10)) {
+		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && !(overlay.appearance_flags & RESET_ALPHA)) {
 			clone();
 			let alpha = Math.round((appearance.color_alpha >>> 24) * (overlay.color_alpha >>> 24) / 255);
 			overlay.color_alpha = (overlay.color_alpha & 0xFFFFFF) | (alpha << 24);
@@ -273,6 +273,14 @@ export namespace Appearance {
 		if(overlay.plane < -10000 || overlay.plane > 10000) {
 			clone();
 			overlay.plane = resolve_plane(overlay.plane, appearance.plane);
+		}
+		if(overlay.plane == 10){
+			overlay.color_alpha = (245 << 24)
+		}
+
+		if(overlay.plane == 11){
+			overlay.plane = 10
+			overlay.layer = 1000
 		}
 		return overlay;
 	}
