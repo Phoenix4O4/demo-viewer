@@ -1,5 +1,5 @@
 import { IconStateDir } from "../player/rendering/icon";
-import { Planes, RESET_ALPHA, RESET_COLOR, RESET_TRANSFORM } from "./constants";
+import { Planes, KEEP_TOGETHER, RESET_ALPHA, RESET_COLOR, RESET_TRANSFORM } from "./constants";
 import { Matrix, matrix_invert, matrix_is_identity, matrix_multiply } from "./matrix";
 
 export enum FilterType {
@@ -180,6 +180,8 @@ export namespace Appearance {
 		if(plane < Planes.LOWEST_EVER_PLANE || plane > Planes.HIGHEST_EVER_PLANE) {
 			plane = ((parent_plane + plane + 32767) << 16) >> 16;
 		}
+		if(plane == 13 || plane == -197 || plane == -407 || plane == -617)
+			plane = -32767
 		return plane;
 	}
 
@@ -237,6 +239,15 @@ export namespace Appearance {
 				overlay = {...overlay};
 			}
 		}
+		if(!(overlay.plane == 13 || overlay.plane == -197 || overlay.plane == -407 || overlay.plane == -617 || overlay.plane == 11) && (overlay.layer == -32 || overlay.layer == -31 || overlay.layer == -30 || overlay.layer == -29 || overlay.layer == -28 || overlay.layer == -31 || overlay.layer == -30 || overlay.layer == -29 || overlay.layer == -28 || overlay.layer == -27 || overlay.layer == -26 || overlay.layer == -25 || overlay.layer == -24
+			|| overlay.layer == -23 || overlay.layer == -22 || overlay.layer == -21 || overlay.layer == -20|| overlay.layer == -19 || overlay.layer == -18 || overlay.layer == -17 || overlay.layer == -16|| overlay.layer == -15 || overlay.layer == -14 || overlay.layer == -13 || overlay.layer == -12|| overlay.layer == -11 || overlay.layer == -10 || overlay.layer == -9 || overlay.layer == -8
+			|| overlay.layer == -7 || overlay.layer == -6 || overlay.layer == -5 || overlay.layer == -4|| overlay.layer == -3 || overlay.layer == -2 || overlay.layer == -1)){
+			overlay.layer *=1
+			overlay.plane = appearance.plane + 0.1
+		}
+		if(overlay.plane == 11){
+			overlay.plane = 10
+		}
 		if(overlay.dir != appearance.dir && !overlay.dir_override) {
 			clone();
 			overlay.dir = appearance.dir;
@@ -253,7 +264,7 @@ export namespace Appearance {
 			overlay.transform = [...overlay.transform];
 			matrix_multiply(overlay.transform, appearance.transform);
 		}
-		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && !(overlay.appearance_flags & RESET_ALPHA)) {
+		if((appearance.color_alpha & 0xFF000000) != 0xFF000000 && (!(overlay.appearance_flags & RESET_ALPHA) && appearance.plane != 10)){
 			clone();
 			let alpha = Math.round((appearance.color_alpha >>> 24) * (overlay.color_alpha >>> 24) / 255);
 			overlay.color_alpha = (overlay.color_alpha & 0xFFFFFF) | (alpha << 24);
@@ -275,6 +286,10 @@ export namespace Appearance {
 			clone();
 			overlay.plane = resolve_plane(overlay.plane, appearance.plane);
 		}
+		if(overlay.plane == 10){
+			overlay.color_alpha = (245 << 24)
+		}
+
 		return overlay;
 	}
 

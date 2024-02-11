@@ -453,7 +453,13 @@ export class DemoPlayer {
 			}
 			let root_appearance = thing.get_appearance(this, see_invisible);
 			if(!root_appearance || root_appearance.invisibility > see_invisible) continue;
-			if(Appearance.is_lighting_plane(root_appearance.plane) && !this.show_darkness) continue;
+			if(root_appearance.plane == 11 && !this.show_darkness) continue;
+			if(root_appearance.plane == 10 && (root_appearance.layer == 20021 || root_appearance.layer == 20020) && this.show_darkness) continue;
+			if(root_appearance.plane == -20) continue;
+			if(root_appearance.plane == 10 && !this.show_darkness) continue;
+			if(root_appearance.plane == -200 && !this.show_darkness) continue;
+			if(root_appearance.plane == -410 && !this.show_darkness) continue;
+			if(root_appearance.plane == -620 && !this.show_darkness) continue;
 			for(let appearance of Appearance.get_appearance_parts(root_appearance)) {
 				if(!appearance.icon_state_dir) {
 					let dir = this.get_appearance_dir(appearance, buffer.atlas);
