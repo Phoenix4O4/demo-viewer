@@ -1,5 +1,5 @@
 import { IconStateDir } from "../player/rendering/icon";
-import { RESET_ALPHA, KEEP_TOGETHER, RESET_COLOR, RESET_TRANSFORM } from "./constants";
+import { Planes, RESET_ALPHA, RESET_COLOR, RESET_TRANSFORM } from "./constants";
 import { Matrix, matrix_invert, matrix_is_identity, matrix_multiply } from "./matrix";
 
 export enum FilterType {
@@ -176,13 +176,21 @@ export type TransitionalAppearance = BaseAppearance<TransitionalAppearance|Appea
 export namespace Appearance {
 	const empty_arr : [] = [];
 	export function resolve_plane(plane : number, parent_plane = 0) : number {
-		if(parent_plane < -10000 || parent_plane > 10000) parent_plane = resolve_plane(parent_plane);
-		if(plane < -10000 || plane > 10000) {
+		if(parent_plane < Planes.LOWEST_EVER_PLANE || parent_plane > Planes.HIGHEST_EVER_PLANE) parent_plane = resolve_plane(parent_plane);
+		if(plane < Planes.LOWEST_EVER_PLANE || plane > Planes.HIGHEST_EVER_PLANE) {
 			plane = ((parent_plane + plane + 32767) << 16) >> 16;
 		}
-		if(plane == 13 || plane == -197 || plane == -407 || plane == -617)
-			plane = -32767
 		return plane;
+	}
+
+	/**
+	 * Used to determine if the appearance belongs to a plane that should be invisible when darkness is toggled off. Without darkness there's no reason to see sprites
+	 * that exist to be an alpha mask of the dark.
+	 * @param plane of the appearance as a number
+	 * @returns TRUE if the plane value falls within the range of Byond lighting planes, FALSE if the plane is anything else
+	 */
+	export function is_lighting_plane(plane : number): boolean {
+		return (plane >= Planes.EMISSIVE_BLOCKER_PLANE && plane <= Planes.O_LIGHTING_VISUAL_PLANE)
 	}
 
 	export function get_appearance_parts(appearance : Appearance) {
@@ -229,13 +237,6 @@ export namespace Appearance {
 				overlay = {...overlay};
 			}
 		}
-
-		if(!(overlay.plane == 13 || overlay.plane == -197 || overlay.plane == -407 || overlay.plane == -617 || overlay.plane == 11) && (overlay.layer == -32 || overlay.layer == -31 || overlay.layer == -30 || overlay.layer == -29 || overlay.layer == -28 || overlay.layer == -31 || overlay.layer == -30 || overlay.layer == -29 || overlay.layer == -28 || overlay.layer == -27 || overlay.layer == -26 || overlay.layer == -25 || overlay.layer == -24
-			|| overlay.layer == -23 || overlay.layer == -22 || overlay.layer == -21 || overlay.layer == -20|| overlay.layer == -19 || overlay.layer == -18 || overlay.layer == -17 || overlay.layer == -16|| overlay.layer == -15 || overlay.layer == -14 || overlay.layer == -13 || overlay.layer == -12|| overlay.layer == -11 || overlay.layer == -10 || overlay.layer == -9 || overlay.layer == -8
-			|| overlay.layer == -7 || overlay.layer == -6 || overlay.layer == -5 || overlay.layer == -4|| overlay.layer == -3 || overlay.layer == -2 || overlay.layer == -1)){
-			overlay.layer *=1
-			overlay.plane = appearance.plane + 0.1
-		}
 		if(overlay.dir != appearance.dir && !overlay.dir_override) {
 			clone();
 			overlay.dir = appearance.dir;
@@ -270,17 +271,9 @@ export namespace Appearance {
 			clone();
 			overlay.blend_mode = appearance.blend_mode;
 		}
-		if(overlay.plane < -10000 || overlay.plane > 10000) {
+		if(overlay.plane < Planes.LOWEST_EVER_PLANE || overlay.plane > Planes.HIGHEST_EVER_PLANE) {
 			clone();
 			overlay.plane = resolve_plane(overlay.plane, appearance.plane);
-		}
-		if(overlay.plane == 10){
-			overlay.color_alpha = (245 << 24)
-		}
-
-		if(overlay.plane == 11){
-			overlay.plane = 10
-			overlay.layer = 1000
 		}
 		return overlay;
 	}
