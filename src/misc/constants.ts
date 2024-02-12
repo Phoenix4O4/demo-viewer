@@ -40,19 +40,19 @@ export const MAX_LAYER : number = 32;
 ///All relevant planes used by Yogstation categorized into an enum of their values
 export const enum Planes{
     LOWEST_EVER_PLANE = -10000,
-    CLICKCATCHER_PLANE = -99,
+    CLICKCATCHER_PLANE = -80,
     SPACE_PLANE = -95,
-    FLOOR_PLANE = -2,
-    GAME_PLANE = -1,
+    FLOOR_PLANE = -11,
+    GAME_PLANE = -9,
     BLACKNESS_PLANE = 0,
     EMISSIVE_BLOCKER_PLANE = 12,
     EMISSIVE_PLANE = 13,
     EMISSIVE_UNBLOCKABLE_PLANE = 14,
-    LIGHTING_PLANE = 15,
-    O_LIGHTING_VISUAL_PLANE = 16,
+    LIGHTING_PLANE = 10,
+    O_LIGHTING_VISUAL_PLANE = 12,
     FLOOR_OPENSPACE_PLANE = 17,
     BYOND_LIGHTING_PLANE = 18,
-    CAMERA_STATIC_PLANE = 19,
+    CAMERA_STATIC_PLANE = 22,
     HIGHEST_EVER_PLANE = 10000,
 }
 
