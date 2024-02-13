@@ -60,7 +60,7 @@ const password = _password
 if(querystring.has("demo_url")) {
 	_url = querystring.get("demo_url");
 } else if(querystring.has("roundid")) {
-	_url = `http://209.222.101.195:10101/rounds/${querystring.get("roundid")}/replay?password=${password}`;
+	_url = `http://replays.monkestation.com/rounds/${querystring.get("roundid")}/replay?password=${password}`;
 }
 const url = _url;
 
