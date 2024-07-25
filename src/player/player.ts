@@ -91,10 +91,12 @@ export class DemoPlayer {
 						res.path = res_load.path;
 						if(!res.data) {
 							let paintings_pattern = "data/paintings/public/";
-							if(res_load.path.startsWith(paintings_pattern) && this.rev_data?.repo == "Monkestation/Monkestation2.0") {
+							if(res_load.path.startsWith(paintings_pattern) && this.rev_data?.repo == "BlueMoon-Labs/MOLOT-BlueMoon-Station") {
 								res.load_url = "https://cdn.yogstation.net/paintings/" + res_load.path.substring(paintings_pattern.length);
 							} else {
-								res.load_url = `https://cdn.jsdelivr.net/gh/${this.rev_data?.repo || "Monkestation/Monkestation2.0"}@${(this.rev_data?.commit || "master")}/${res_load.path}`;
+								// Replace 'smiley' with 'SmiLey' in the path
+								let correctedPath = res.path.replace(/smiley/g, 'SmiLeY');
+								res.load_url = `https://cdn.jsdelivr.net/gh/${this.rev_data?.repo || "BlueMoon-Labs/MOLOT-BlueMoon-Station"}@${(this.rev_data?.commit || "master")}/${correctedPath}`;
 							}
 						}
 					}
